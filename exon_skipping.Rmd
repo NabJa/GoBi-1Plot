@@ -1,0 +1,125 @@
+---
+title: "GoBi Exon-Skipping"
+author: "Nabil Jabareen"
+date: "10 November 2017"
+output: html_document
+---
+
+```{r, echo=FALSE, include=FALSE}
+
+library("ggplot2")
+
+gencode <- read.table("exonSkipOuts/gencode.txt", header = T, sep = "\t")
+gencode <- gencode[c("id","max_skipped_exon", "max_skipped_bases")]
+gencode$gtf <- "gencode"
+
+Homo_sapiens3767 <- read.table("exonSkipOuts/Homo_sapiens3767.txt", header = T, sep = "\t")
+Homo_sapiens3767 <- Homo_sapiens3767[c("id","max_skipped_exon", "max_skipped_bases")]
+Homo_sapiens3767$gtf <- "Homo_sapiens3767"
+
+Homo_sapiens3775 <- read.table("exonSkipOuts/Homo_sapiens3775.txt", header = T, sep = "\t")
+Homo_sapiens3775 <- Homo_sapiens3775[c("id","max_skipped_exon", "max_skipped_bases")]
+Homo_sapiens3775$gtf <- "Homo_sapiens3775"
+
+
+Homo_sapiens3886 <- read.table("exonSkipOuts/Homo_sapiens3886.txt", header = T, sep = "\t")
+Homo_sapiens3886 <- Homo_sapiens3886[c("id","max_skipped_exon", "max_skipped_bases")]
+Homo_sapiens3886$gtf <- "Homo_sapiens3886"
+
+
+Homo_sapiens3890 <- read.table("exonSkipOuts/Homo_sapiens3890.txt", header = T, sep = "\t")
+Homo_sapiens3890 <- Homo_sapiens3890[c("id","max_skipped_exon", "max_skipped_bases")]
+Homo_sapiens3890$gtf <- "Homo_sapiens3890"
+
+
+Mus_musculus3875 <- read.table("exonSkipOuts/Mus_musculus3875.txt", header = T, sep = "\t")
+Mus_musculus3875 <- Mus_musculus3875[c("id","max_skipped_exon", "max_skipped_bases")]
+Mus_musculus3875$gtf <- "Mus_musculus3875"
+
+fullData <- rbind(gencode, Homo_sapiens3767, Homo_sapiens3775,Homo_sapiens3886, Homo_sapiens3890, Mus_musculus3875)
+
+```
+
+
+# GoBi: Excercise 1
+
+The following plots show the maximum number of skipped Bases and skipped Exons in the human and mouse as commulative, relative frequency plots. Yeast (*Saccharomyces cerevisiae*) was also analysed, but it is not included in the graphs, because there were no exon skipping. Under the graphs are links to the genes with the most exon / bases skippings.
+
+## Max skipped Bases
+
+```{r, echo=F}
+ggplot(fullData, aes(log(max_skipped_bases), colour = gtf)) + stat_ecdf(geom = "step") + coord_cartesian(xlim = c(3,7)) + labs(colour = "Source Organism" ) + labs(x = "Log[max skipped Bases]") + labs(y="Relative frequency") + labs(title="Cmmulative plot of max skipped Bases")
+```
+
+
+### Genes with most skipped Bases
+
+ENSG00000155657 - *Homo sapiens* - Skipped Bases: 26106  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000155657;r=2:178525989-178830802>
+
+ENSMUSG00000051747 - *Mus musculus* - Skipped Bases: 24843  
+<http://www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g=ENSMUSG00000051747;r=2:76703980-76982547>
+
+ENSG00000283186 - *Homo sapiens* - Skipped Bases: 22134  
+<http://www.ensembl.org/Homo_sapiens/Gene/Idhistory?g=ENSG00000283186>
+
+ENSG00000155657 - *Homo sapiens* - Skipped Bases: Skipped Bases: 22134  
+<https://www.ensembl.org/Homo_sapiens/Gene/Summary?g=ENSG00000155657;r=2:178525989-178830802>
+
+ENSG00000145113 - *Homo sapiens* - Skipped Bases: 12875  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000145113;r=3:195746765-195812277>
+
+ENSG00000164199 - *Homo sapiens* - Skipped Bases: 12530  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000164199;r=5:90529344-91164437>
+
+ENSG00000187240 - *Homo sapiens* - Skipped Bases: 10182  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000187240;r=11:103109431-103479863>
+
+ENSMUSG00000075249 - *Mus musculus* - Skipped Bases: 9659  
+<http://www.ensembl.org/Mus_musculus_A_J/Gene/Summary?db=core;g=MGP_AJ_G0025867;r=2:80381144-80444773>
+
+ENSG00000188738 - *Homo sapiens* - Skipped Bases: 9437  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000188738;r=2:185738895-185833290>
+
+ENSG00000163092 - *Homo sapiens* - Skipped Bases: 9379  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000163092;r=2:166888487-167259753>
+
+
+## Max skipped Exons
+
+
+```{r, echo=F}
+ggplot(fullData, aes(log(max_skipped_exon), color = gtf)) + stat_ecdf(geom = "step") + coord_cartesian(xlim = c(0,2)) + labs(title = "Cmmulative plot of max skipped Exons")+ labs(colour = "Source Organism" ) + labs(x = "Log[max skipped Exons]") + labs(y="Relative frequency")
+```
+
+### Genes with most skipped Exons
+
+ENSG00000155657 - *Homo sapiens* -  Skipped Exons: 169  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000155657;r=2:178525989-178830802>
+
+ENSMUSG00000051747 - *Mus musculus* - Skipped Exons: 154  
+<http://www.ensembl.org/Mus_musculus/Gene/Summary?db=core;g=ENSMUSG00000051747;r=2:76703980-76982547>
+
+ENSG00000283186 - *Homo sapiens* - Skipped Exons: 121  
+<http://www.ensembl.org/Homo_sapiens/Gene/Idhistory?g=ENSG00000283186>
+
+ENSG00000187240 - *Homo sapiens* - Skipped Exons: 70  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000187240;r=11:103109431-103479863>
+
+ENSG00000271425 - *Homo sapiens* - Skipped Exons: 70  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000271425;r=1:146064699-146144804>
+
+ENSG00000163386 - *Homo sapiens* - Skipped Exons: 60  
+<http://www.ensembl.org/Homo_sapiens/Gene/Idhistory?g=ENSG00000163386>
+
+ENSG00000164199 - *Homo sapiens* - Skipped Exons: 59  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000164199;r=5:90529344-91164437>
+
+ENSG00000162825 - *Homo sapiens* - Skipped Exons: 56  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000162825;r=1:145289900-145405778>
+
+ENSG00000186275 - *Homo sapiens* - Skipped Exons: 52  
+<http://www.ensembl.org/Homo_sapiens/Gene/Idhistory?g=ENSG00000186275>
+
+ENSG00000150995 - *Homo sapiens* - Skipped Exons: 42  
+<http://www.ensembl.org/Homo_sapiens/Gene/Summary?db=core;g=ENSG00000150995;r=3:4493348-4847840>
